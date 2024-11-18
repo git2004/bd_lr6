@@ -1,0 +1,20 @@
+CREATE USER Sizov_I_M
+IDENTIFIED BY 0000;
+
+GRANT CREATE SESSION TO Sizov_I_M;
+GRANT CREATE SEQUENCE, CREATE TABLE TO Sizov_I_M;
+GRANT SELECT ON sh.test_operation, sh.test_uchast TO Sizov_I_M;
+
+CREATE TABLE sh.operations AS
+SELECT ops.*
+FROM sh.test_operation ops
+JOIN sh.test_uchast u ON u.inn = ops.inn_pl
+WHERE REGEXP_LIKE(lower(u.naimen), '[з3][аa][oо]|^[з3][аa][кk][рp]ы[тt][оo][eе][ ]?[aа][kк]ци[oо][hн][eе][pр][hн][oо][eе][ ]?[oо]бщ[eе]щ[еe][cс][tт][вb][oо]')
+AND NOT REGEXP_LIKE(ops.bic_pl, '^0445')
+
+GRANT SELECT, ALL ON sh.moscow TO KC2203_17;
+
+UPDATE sh.not_moscow_and_not_piter
+SET descr = 'Погасил заранее', data_op = '13.10.24' WHERE KOD = 3;
+
+REVOKE SELECT, ALL ON sh.not_moscow_and_not_piter FROM KC2203_17;
